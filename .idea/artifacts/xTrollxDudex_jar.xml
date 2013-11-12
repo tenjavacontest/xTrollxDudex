@@ -1,8 +1,0 @@
-<component name="ArtifactManager">
-  <artifact type="jar" name="xTrollxDudex:jar">
-    <output-path>F:/Server/Plugin Test Server/plugins</output-path>
-    <root id="archive" name="xTrollxDudex.jar">
-      <element id="module-output" name="xTrollxDudex" />
-    </root>
-  </artifact>
-</component>
