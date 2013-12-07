@@ -1,0 +1,8 @@
+main: com.gmail.woodyc40.tenjava.TenJava
+name: MobWar
+version: 1.0
+
+commands:
+    mw:
+        description: MobWar command label
+        usage: /mw [Command][Arguments]
