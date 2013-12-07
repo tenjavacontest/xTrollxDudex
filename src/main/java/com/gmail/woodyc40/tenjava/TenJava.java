@@ -9,12 +9,15 @@ package com.gmail.woodyc40.tenjava;
 
 import com.gmail.woodyc40.tenjava.command.CommandHandler;
 import com.gmail.woodyc40.tenjava.listeners.Listener;
+import com.gmail.woodyc40.tenjava.managers.GameManager;
 import org.bukkit.plugin.java.JavaPlugin;
 
 public class TenJava extends JavaPlugin {
 
     public void onEnable() {
         getServer().getPluginManager().registerEvents(new Listener(), this);
+
+        GameManager gm = new GameManager(this);
 
         getCommand("mw").setExecutor(new CommandHandler());
     }
