@@ -51,7 +51,14 @@ public class CommandHandler implements CommandExecutor {
 
             Player p = (Player) sender;
             if(args.length < 1) {
-                MessageManager.getInstance().sendHelp(p, 1, "/mw create: Sets the current world to an arena");
+                MessageManager.getInstance().sendHelp(p, 1, "/mw create: Sets the current world to an arena",
+                    "/mw stats: Shows your stats"
+                    "/mw join [Arena ID]: Joins an arena");
+                return true;
+            }
+            if(args.length >= 1) {
+                execute(p, args);
+                return true;
             }
         }
 
