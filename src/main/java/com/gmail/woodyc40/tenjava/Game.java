@@ -21,7 +21,7 @@ public class Game {
     private boolean game = false;
     private World w;
     private Computer com = new Computer(this);
-
+    private kills = 0;
 
     public Game(int i) {
         id = i;
@@ -57,6 +57,10 @@ public class Game {
 
     public Computer getCom() {
         return com;
+    }
+
+    public String getScoreCard() {
+        return ChatColor.
     }
 
 }
