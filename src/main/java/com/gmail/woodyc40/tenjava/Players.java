@@ -30,4 +30,9 @@ public class Players {
         }
     }
 
+    public String getScore() {
+        return ChatColor.GOLD + "Your Mob Spawn Rate: " + ChatColor.DARK_BLUE + mobSpawn + "\n" 
+            + ChatColor.GOLD + "Your wins: " + ChatColor.DARK_BLUE + wins;
+    }
+
 }
