@@ -72,6 +72,7 @@ public class Listener implements org.bukkit.event.Listener {
         for(int i = 0; i <= GameManager.getInstance().getPlayerData(p).getSpawnRate(); i++) {
             e = p.getWorld().spawnEntity(GameManager.getInstance().getArena(p).getSpawn(), et);
         }
+        GameManager.getInstance().getArena(p).spawn(GameManager.getInstance().getPlayerData(p).getSpawnRate(), et);
         return e;
     }
 
