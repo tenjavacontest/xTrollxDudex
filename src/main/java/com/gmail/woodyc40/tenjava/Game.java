@@ -18,10 +18,10 @@ public class Game {
 
     public Location spawn;
     public String p;
+    private List<UUID> uuids = new ArrayList<>();
 
     private int id = 0;
     private boolean game = false;
-    private List<UUID> uuids = new ArrayList<>();
     private World w;
     private Computer com = new Computer(this);
     private kills = 0;
@@ -31,8 +31,8 @@ public class Game {
     }
 
     public void spawn(int in, Entity e) {
-        uuids.add(e.getUniqueId());
-        com.spawn(in, e.getType());
+        if(in % 2 == 0) 
+            com.spawn(in, e.getType());
     }
 
     public int getId() {
