@@ -18,7 +18,7 @@ public class Game {
 
     public Location spawn;
     public String p;
-    private List<UUID> uuids = new ArrayList<>();
+    public List<UUID> uuids = new ArrayList<>();
 
     private int id = 0;
     private boolean game = false;
