@@ -25,9 +25,11 @@ import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.event.player.PlayerLoginEvent;
 import org.bukkit.material.SpawnEgg;
 
-import java.util.UUID;
+import java.util.*;
 
 public class Listener implements org.bukkit.event.Listener {
+
+    public final List<Player> list = new ArrayList<>();
 
     /////////////////////////GAMELISTENER//////////////////////////
     @EventHandler
@@ -44,6 +46,11 @@ public class Listener implements org.bukkit.event.Listener {
 
             GameManager.getInstance().notCreating(e.getPlayer());
         } else if(e.getAction().equals(Action.LEFT_CLICK_AIR)) {
+            if(list.contains(e.getPlayer()) {
+                e.getPlayer().sendMessage(MessageManager.getInstance().getError() + "This is on cool down");
+                return;
+            }
+
             Game g = GameManager.getInstance().getArena(e.getPlayer());
             if(GameManager.getInstance().getArena(e.getPlayer()) != null) {
                 if(mat.equals(Material.MONSTER_EGG)) {
@@ -51,12 +58,15 @@ public class Listener implements org.bukkit.event.Listener {
                     EntityType ent = se.getSpawnedType();
 
                     spawn(e.getPlayer(), ent);
+                    start(e.getPlayer(), 5);
                 } else if(mat.equals(Material.IRON_BLOCK)) {
                     g.getSpawn().clone().add(0, 1, 0).getBlock().setType(Material.IRON_BLOCK);
+                    start(e.getPlayer(), 30);
                 } else if(mat.equals(Material.BLAZE_POWDER)) {
                     for(int i = 0; i <= 4; i++) {
                         g.getWorld().spawn(g.getSpawn(), Blaze.class);
                     }
+                    start(e.getPlayer(), 30);
                 } else if(mat.equals(Material.GOLD_INGOT)) {
                     int i = GameManager.getInstance().getPlayerData(e.getPlayer()).getSpawnRate() * 4;
                     int in = 0;
@@ -86,6 +96,7 @@ public class Listener implements org.bukkit.event.Listener {
                         }
                     }
                 }
+                start(e.getPlayer(), 30);
             }
             if(mat.equals(Material.WOOD_DOOR)) {
                 GameManager.getInstance().removePlayer(e.getPlayer());
@@ -142,6 +153,16 @@ public class Listener implements org.bukkit.event.Listener {
         }
         GameManager.getInstance().getArena(p).spawn(GameManager.getInstance().getPlayerData(p).getSpawnRate(), e);
         return e;
+    }
+
+    public void start(final Player p, final int seconds) {
+        list.add(p);
+        Bukkit.getServer().getScheduler().scheduleSyncDelayedTask(TenJava.getInstance(), new Runnable() {
+            @Override
+            public void run() {
+                list.remove(p);
+            }
+        }, seconds*20L);
     }
 
 }
