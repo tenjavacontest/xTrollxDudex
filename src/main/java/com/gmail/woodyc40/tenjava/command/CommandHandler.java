@@ -56,7 +56,9 @@ public class CommandHandler implements CommandExecutor {
                     "/mw join [Arena ID]: Joins an arena");
                 return true;
             }
-            if(args.length >= 1) {
+            if(args.length == 1) {
+                getCommand(args[0]).execute(p, args[0], new String[]{ });
+            if(args.length >= 2) {
                 execute(p, args);
                 return true;
             }
