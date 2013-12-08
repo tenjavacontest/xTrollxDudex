@@ -30,8 +30,9 @@ public class Game {
         id = i;
     }
 
-    public void spawn(int in, EntityType e) {
-        com.spawn(in, e);
+    public void spawn(int in, Entity e) {
+        uuids.add(e.getUniqueId());
+        com.spawn(in, e.getType());
     }
 
     public int getId() {
