@@ -60,7 +60,7 @@ public class Game {
     }
 
     public String getScore() {
-        return ChatColor.GOLD + "InGame kills: " + ChatColor.DARK_BLUE + kills;
+        return ChatColor.GOLD + "Your in-game kills: " + ChatColor.DARK_BLUE + kills;
     }
 
 }
