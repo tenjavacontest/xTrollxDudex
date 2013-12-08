@@ -22,8 +22,7 @@ public class TenJava extends JavaPlugin {
         saveDefaultConfig();
         getServer().getPluginManager().registerEvents(new Listener(), this);
 
-        GameManager gm = new GameManager(this);
-        gm.loadGames();
+        GameManager.getInstance().loadGames();
 
         getCommand("mw").setExecutor(new CommandHandler());
         CommandHandler.register("create", new Create());

@@ -33,12 +33,8 @@ public class CommandHandler implements CommandExecutor {
             p.sendMessage(MessageManager.getInstance().getError() + "This command does not exist!");
             return;
         }
-        String[] newArgs = new String[args.length - 1];
-        for(int i = 1; i <= args.length; i++) {
-            newArgs[i - 1] = args[i];
-        }
 
-        getCommand(args[0]).execute(p, args[0], newArgs);
+        getCommand(args[0]).execute(p, args[0], new String[]{ args[1] });
     }
 
     public boolean onCommand(CommandSender sender, Command cmd, String label, String[] args) {
@@ -57,7 +53,12 @@ public class CommandHandler implements CommandExecutor {
                 return true;
             }
             if(args.length == 1) {
+                if(getCommand(args[0]) == null) {
+                    p.sendMessage(MessageManager.getInstance().getError() + "This command does not exist!");
+                    return true;
+                }
                 getCommand(args[0]).execute(p, args[0], new String[]{ });
+                return true;
             }
             if(args.length >= 2) {
                 execute(p, args);

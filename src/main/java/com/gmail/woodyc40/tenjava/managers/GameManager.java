@@ -9,17 +9,18 @@ package com.gmail.woodyc40.tenjava.managers;
 
 import com.gmail.woodyc40.tenjava.Game;
 import com.gmail.woodyc40.tenjava.Players;
+import com.gmail.woodyc40.tenjava.TenJava;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.World;
+import org.bukkit.entity.Entity;
 import org.bukkit.entity.EntityType;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.PlayerInventory;
 import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.material.SpawnEgg;
-import org.bukkit.plugin.Plugin;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -32,7 +33,6 @@ public class GameManager {
     Map<String, PlayerInventory> pi = new HashMap<>();
 
     private int arenas;
-    private Plugin plugin;
     private List<Players> playerData = new ArrayList<>();
     private static List<Game> games = new ArrayList<>();
     private static Map<String, Game> creators = new HashMap<>();
@@ -40,10 +40,6 @@ public class GameManager {
 
 
     protected GameManager() {}
-
-    public GameManager(Plugin p) {
-        plugin = p;
-    }
 
     public static GameManager getInstance() {
         return gm;
@@ -59,7 +55,8 @@ public class GameManager {
 
         creators.put(creator.getName(), g);
 
-        plugin.getConfig().set("Arenas." + arenas + ".world", creator.getWorld().getName());
+        TenJava.getInstance().getConfig().set("Arenas." + arenas + ".world", creator.getWorld().getName());
+        TenJava.getInstance().saveConfig();
 
         creator.getInventory().addItem(new ItemStack(Material.BLAZE_ROD));
         creator.sendMessage(MessageManager.getInstance().getPrefix() + "Click the spawn");
@@ -69,12 +66,10 @@ public class GameManager {
 
     public void loadGames() {
         arenas = 0;
-        for(String key : plugin.getConfig().getConfigurationSection("Arenas").getKeys(false)) {
-            String s = plugin.getConfig().getString("Arenas." + key);
-
-            Game g = new Game(arenas);
-            g.setWorld(Bukkit.getServer().getWorld(s));
-            g.setSpawn(deserializeLoc(plugin.getConfig().getString("Arenas." + g.getId() + ".spawn")));
+        for(String key : TenJava.getInstance().getConfig().getConfigurationSection("Arenas").getKeys(false)) {
+            Game g = new Game(Integer.parseInt(key));
+            g.setWorld(Bukkit.getServer().getWorld(TenJava.getInstance().getConfig().getString("Arenas." + g.getId() + ".world")));
+            g.setSpawn(deserializeLoc(TenJava.getInstance().getConfig().getString("Arenas." + g.getId() + ".spawn")));
             games.add(g);
         }
     }
@@ -169,6 +164,9 @@ public class GameManager {
             }
         });
 
+        p.teleport(g.getSpawn());
+        g.p = p.getName();
+
         locs.put(p.getName(), p.getLocation());
         p.setAllowFlight(true);
         p.setFlying(false);
@@ -180,6 +178,9 @@ public class GameManager {
             if(g.p == p.getName()) {
                 g.p = null;
                 g.kills = 0;
+                for(Entity e : g.getWorld().getEntities()) {
+                    e.remove();
+                }
             }
         }
         p.teleport(locs.get(p.getName()));
@@ -193,11 +194,12 @@ public class GameManager {
 
         p.setFlying(false);
         p.setAllowFlight(false);
+
     }
 
     public boolean isInGame(Player p) {
         for(Game g : games) {
-            if(g.p == p.getName()) {
+            if(g.p.equals(p.getName())) {
                 return true;
             }
         }
@@ -227,7 +229,7 @@ public class GameManager {
     }
     public Location deserializeLoc(String s){
         String[] st = s.split(",");
-        return new Location(Bukkit.getWorld(st[1]), Integer.parseInt(st[1]), Integer.parseInt(st[2]), Integer.parseInt(st[3]));
+        return new Location(Bukkit.getServer().getWorld(st[0]), Integer.parseInt(st[1]), Integer.parseInt(st[2]), Integer.parseInt(st[3]));
     }
 
 }

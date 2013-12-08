@@ -19,6 +19,7 @@ import org.bukkit.event.EventHandler;
 import org.bukkit.event.block.Action;
 import org.bukkit.event.entity.EntityDeathEvent;
 import org.bukkit.event.entity.EntityExplodeEvent;
+import org.bukkit.event.entity.EntityTargetEvent;
 import org.bukkit.event.player.PlayerDropItemEvent;
 import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.event.player.PlayerLoginEvent;
@@ -36,7 +37,10 @@ public class Listener implements org.bukkit.event.Listener {
         if(e.getAction().equals(Action.LEFT_CLICK_BLOCK) && mat.equals(Material.BLAZE_ROD) && GameManager.getInstance().isCreating(e.getPlayer())) {
             GameManager.getInstance().getArena(e.getPlayer()).setSpawn(e.getClickedBlock().getLocation());
             e.getPlayer().sendMessage(MessageManager.getInstance().getPrefix() + "Spawn set. This arena is done.");
+
             TenJava.getInstance().getConfig().set("Arenas." + GameManager.getInstance().getArena(e.getPlayer()).getId() + ".spawn", GameManager.getInstance().serializeLoc(e.getClickedBlock().getLocation()));
+            TenJava.getInstance().saveConfig();
+
             GameManager.getInstance().notCreating(e.getPlayer());
         } else if(e.getAction().equals(Action.LEFT_CLICK_AIR)) {
             Game g = GameManager.getInstance().getArena(e.getPlayer());
@@ -95,6 +99,8 @@ public class Listener implements org.bukkit.event.Listener {
     public void onDeath(EntityDeathEvent e) {
         Game g = GameManager.getInstance().getArena(e.getEntity().getWorld());
         if(g != null) {
+            assert !g.uuids.isEmpty();
+            assert e.getEntity().getKiller() != null;
             if(g.uuids.contains(e.getEntity().getKiller().getUniqueId())) {
                 g.kills++;
                 GameManager.getInstance().getPlayerData(g.getPlayer()).increment(250);
@@ -128,10 +134,29 @@ public class Listener implements org.bukkit.event.Listener {
         tnt.setIsIncendiary(true);
     }
 
+    @EventHandler
+    public void onInteract(PlayerInteractEvent e) {
+        if(GameManager.getInstance().isInGame(e.getPlayer())) {
+            e.setCancelled(true);
+        }
+    }
+
+    @EventHandler
+    public void onTarget(EntityTargetEvent e) {
+        if(e.getTarget() instanceof Player && GameManager.getInstance().isInGame((Player) e.getTarget())) {
+            e.setCancelled(true);
+        }
+    }
+
     public Entity spawn(Player p, EntityType et) {
         Entity e = null;
         for(int i = 0; i <= GameManager.getInstance().getPlayerData(p).getSpawnRate(); i++) {
-            e = p.getWorld().spawnEntity(GameManager.getInstance().getArena(p).getSpawn(), et);//TODO set targets
+            e = p.getWorld().spawnEntity(GameManager.getInstance().getArena(p).getSpawn(), et);
+            for(Entity entity : e.getNearbyEntities(100, 100, 100)) {
+                if(GameManager.getInstance().getArena(p).getCom().uuids.contains(entity.getUniqueId())) {
+                    ((Creature)e).setTarget((LivingEntity)entity);
+                }
+            }
             GameManager.getInstance().getArena(p).uuids.add(e.getUniqueId());
         }
         GameManager.getInstance().getArena(p).spawn(GameManager.getInstance().getPlayerData(p).getSpawnRate(), e);
