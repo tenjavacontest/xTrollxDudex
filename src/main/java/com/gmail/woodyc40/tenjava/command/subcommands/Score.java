@@ -16,7 +16,11 @@ public class Score implements SubCommand {
 
     public void execute(Player p, String cmd, String[] args) {
         if(cmd.equalsIgnoreCase("stats")) {
-            p.sendMessage(MessageManager.getInstance().getPrefix() + );
+            p.sendMessage(MessageManager.getInstance().getPrefix() +  GameManager.getInstance().getPlayerCard(p).getScoreString())
+);
+            if(GameManager.getInstance().getArena(p) != null) {
+                p.sendMessage(GameManager.getInstance().getArena(p).getScore();
+            }
         }
     }
 
