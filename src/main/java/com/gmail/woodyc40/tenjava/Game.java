@@ -12,6 +12,8 @@ import org.bukkit.Location;
 import org.bukkit.World;
 import org.bukkit.entity.Player;
 
+import java.util.*;
+
 public class Game {
 
     public Location spawn;
@@ -19,12 +21,17 @@ public class Game {
 
     private int id = 0;
     private boolean game = false;
+    private List<UUID> uuids = new ArrayList<>();
     private World w;
     private Computer com = new Computer(this);
     private kills = 0;
 
     public Game(int i) {
         id = i;
+    }
+
+    public void spawn(int in, EntityType e) {
+        com.spawn(in, e);
     }
 
     public int getId() {
