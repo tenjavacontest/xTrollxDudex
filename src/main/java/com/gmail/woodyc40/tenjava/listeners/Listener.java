@@ -40,7 +40,7 @@ public class Listener implements org.bukkit.event.Listener {
                     SpawnEgg se = (SpawnEgg) e.getPlayer().getItemInHand().getData();
                     EntityType ent = se.getSpawnedType();
 
-                    Entity entity = spawn(e.getPlayer(), ent);
+                    spawn(e.getPlayer(), ent);
                 } else if(mat.equals(Material.IRON_BLOCK)) {
                     g.getSpawn().clone().add(0, 1, 0).getBlock().setType(Material.IRON_BLOCK);
                 } else if(mat.equals(Material.BLAZE_POWDER)) {
@@ -70,9 +70,10 @@ public class Listener implements org.bukkit.event.Listener {
     public Entity spawn(Player p, EntityType et) {
         Entity e = null;
         for(int i = 0; i <= GameManager.getInstance().getPlayerData(p).getSpawnRate(); i++) {
-            e = p.getWorld().spawnEntity(GameManager.getInstance().getArena(p).getSpawn(), et);
+            e = p.getWorld().spawnEntity(GameManager.getInstance().getArena(p).getSpawn(), et);//TODO set targets
+            GameManager.getInstance().getArena(p).uuids.add(e.getUniqueId());
         }
-        GameManager.getInstance().getArena(p).spawn(GameManager.getInstance().getPlayerData(p).getSpawnRate(), et);
+        GameManager.getInstance().getArena(p).spawn(GameManager.getInstance().getPlayerData(p).getSpawnRate(), e);
         return e;
     }
 
