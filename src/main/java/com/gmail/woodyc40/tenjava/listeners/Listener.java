@@ -8,8 +8,11 @@
 package com.gmail.woodyc40.tenjava.listeners;
 
 import com.gmail.woodyc40.tenjava.Game;
+import com.gmail.woodyc40.tenjava.TenJava;
 import com.gmail.woodyc40.tenjava.managers.GameManager;
 import com.gmail.woodyc40.tenjava.managers.MessageManager;
+import org.bukkit.Bukkit;
+import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.entity.Blaze;
 import org.bukkit.entity.Entity;
@@ -17,7 +20,10 @@ import org.bukkit.entity.EntityType;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.block.Action;
+import org.bukkit.event.entity.EntityDeathEvent;
+import org.bukkit.event.player.PlayerDropItemEvent;
 import org.bukkit.event.player.PlayerInteractEvent;
+import org.bukkit.event.player.PlayerLoginEvent;
 import org.bukkit.material.SpawnEgg;
 
 import java.util.UUID;
@@ -53,8 +59,21 @@ public class Listener implements org.bukkit.event.Listener {
                     for(UUID id : g.getCom().uuids) {
                         for(Entity entity : g.getWorld().getEntities()) {
                             if(entity.getUniqueId().equals(id)) {
-                                entity.getLocation().clone().subtract(0, 1, 0).getBlock().setType(Material.AIR);
-                                entity.getLocation().clone().subtract(0, 2, 0).getBlock().setType(Material.AIR);
+                                final Location l = entity.getLocation().clone();
+                                final Material[] mats = new Material[2];
+                                mats[0] = l.subtract(0, 1, 0).getBlock().getType();
+                                mats[1] = l.subtract(0, 1, 0).getBlock().getType();
+
+                                l.subtract(0, 1, 0).getBlock().setType(Material.AIR);
+                                l.subtract(0, 2, 0).getBlock().setType(Material.AIR);
+
+                                Bukkit.getServer().getScheduler().scheduleSyncDelayedTask(TenJava.getInstance(), new Runnable() {
+                                    @Override
+                                    public void run() {
+                                        l.subtract(0, 1, 0).getBlock().setType(mats[0]);
+                                        l.subtract(0, 2, 0).getBlock().setType(mats[1]);
+                                    }
+                                }, 5*20L);
                             }
                         }
                         in++;
@@ -64,7 +83,41 @@ public class Listener implements org.bukkit.event.Listener {
                     }
                 }
             }
+            if(mat.equals(Material.WOOD_DOOR)) {
+                GameManager.getInstance().removePlayer(e.getPlayer());
+            }
+            if(mat.equals(Material.STONE_BUTTON)) {
+                Bukkit.getServer().dispatchCommand(e.getPlayer(), "mw stats");
+            }
         }
+    }
+
+    @EventHandler
+    public void onDeath(EntityDeathEvent e) {
+        Game g = GameManager.getInstance().getArena(e.getEntity().getWorld());
+        if(g != null) {
+            if(g.uuids.contains(e.getEntity().getKiller().getUniqueId())) {
+                g.kills++;
+                GameManager.getInstance().getPlayerData(g.getPlayer()).increment(250);
+                if(g.kills == 250) {
+                    GameManager.getInstance().removePlayer(g.getPlayer());
+                    GameManager.getInstance().getPlayerData(g.getPlayer()).increment();
+                    g.getPlayer().sendMessage(MessageManager.getInstance().getPrefix() + "You have won the game, congratz");
+                }
+            }
+        }
+    }
+
+    @EventHandler
+    public void onDrop(PlayerDropItemEvent e) {
+        if(GameManager.getInstance().isInGame(e.getPlayer())) {
+            e.setCancelled(true);
+        }
+    }
+
+    @EventHandler
+    public void onJoin(PlayerLoginEvent e) {
+        GameManager.getInstance().addPlayer(e.getPlayer());
     }
 
     public Entity spawn(Player p, EntityType et) {

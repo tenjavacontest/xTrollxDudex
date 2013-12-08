@@ -1,7 +1,11 @@
 package com.gmail.woodyc40.tenjava;
 
+import org.bukkit.entity.Entity;
+import org.bukkit.entity.EntityType;
+
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Random;
 import java.util.UUID;
 
 public class Computer {

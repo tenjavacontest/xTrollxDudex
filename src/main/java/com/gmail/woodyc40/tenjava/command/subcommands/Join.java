@@ -7,10 +7,15 @@
  */
 package com.gmail.woodyc40.tenjava.command.subcommands;
 
+import com.gmail.woodyc40.tenjava.command.SubCommand;
+import com.gmail.woodyc40.tenjava.managers.GameManager;
+import com.gmail.woodyc40.tenjava.managers.MessageManager;
+import org.bukkit.entity.Player;
+
 public class Join implements SubCommand {
 
     public void execute(Player p, String cmd, String[] args) {
-        if(cmd.equalSIgnoreCase("join") && args.length >= 1) {
+        if(cmd.equalsIgnoreCase("join") && args.length >= 1) {
             int in = 0;
             try {
                 in = Integer.parseInt(args[0]);

@@ -8,11 +8,15 @@
 package com.gmail.woodyc40.tenjava;
 
 import org.bukkit.Bukkit;
+import org.bukkit.ChatColor;
 import org.bukkit.Location;
 import org.bukkit.World;
+import org.bukkit.entity.Entity;
 import org.bukkit.entity.Player;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.UUID;
 
 public class Game {
 
@@ -21,10 +25,10 @@ public class Game {
     public List<UUID> uuids = new ArrayList<>();
 
     private int id = 0;
-    private boolean game = false;
+    public  boolean game = false;
     private World w;
     private Computer com = new Computer(this);
-    private kills = 0;
+    public int kills = 0;
 
     public Game(int i) {
         id = i;

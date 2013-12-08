@@ -14,11 +14,15 @@ import com.gmail.woodyc40.tenjava.managers.GameManager;
 import org.bukkit.plugin.java.JavaPlugin;
 
 public class TenJava extends JavaPlugin {
+    public static TenJava instance;
 
     public void onEnable() {
+        instance = this;
+
         getServer().getPluginManager().registerEvents(new Listener(), this);
 
         GameManager gm = new GameManager(this);
+        gm.loadGames();
 
         getCommand("mw").setExecutor(new CommandHandler());
         CommandHandler.register("create", new Create());
@@ -28,6 +32,10 @@ public class TenJava extends JavaPlugin {
 
     public void onDisable() {
 
+    }
+
+    public static TenJava getInstance() {
+        return instance;
     }
 
 }
