@@ -1,5 +1,5 @@
 /**
- * Name: InfoManager.java
+ * Name: GameManager.java
  * Created: 7 December 2013
  *
  * @version 1.0
