@@ -34,7 +34,7 @@ public class Computer {
                     @Override
                     public void run() {
                         if(ent.isValid() && !ent.isDead()) {
-                            if(ent.getLocation().equals(game.getSpawn())) {
+                            if(ent.getLocation().clone().add(0, 1, 0).equals(game.getSpawn())) {
                                 game.kills--;
                                 game.getPlayer().sendMessage(MessageManager.getInstance().getPrefix() + "Your spawn just lost morale.");
                                 if(game.kills <= 0) {
