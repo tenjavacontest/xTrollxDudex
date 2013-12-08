@@ -34,6 +34,9 @@ public class Listener implements org.bukkit.event.Listener {
     /////////////////////////GAMELISTENER//////////////////////////
     @EventHandler
     public void onMobSend(PlayerInteractEvent e) {
+        if(GameManager.getInstance().isInGame(e.getPlayer()) {
+            return;
+        }
         e.setCancelled(true);
         Material mat = e.getPlayer().getItemInHand().getType();
 
