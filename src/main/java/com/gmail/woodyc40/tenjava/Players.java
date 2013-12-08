@@ -23,4 +23,11 @@ public class Players {
         return mobSpawn;
     }
 
+    public void increment() {
+        wins++;
+        if(wins % 4 == 0) {
+            mobSpawn++;
+        }
+    }
+
 }
