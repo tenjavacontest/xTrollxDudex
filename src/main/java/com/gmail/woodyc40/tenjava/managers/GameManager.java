@@ -170,6 +170,9 @@ public class GameManager {
         });
 
         locs.put(p.getName(), p.getLocation());
+        p.setAllowFlight(true);
+        p.setFlying(false);
+        p.sendMessage(MessageManager.getInstance().getPrefix() + "Fly, hurry!");
     }
 
     public void removePlayer(Player p) {
@@ -187,6 +190,9 @@ public class GameManager {
             p.getInventory().addItem(i);
         }
         pi.remove(p.getName());
+
+        p.setFlying(false);
+        p.setAllowFlight(false);
     }
 
     public boolean isInGame(Player p) {

@@ -14,13 +14,11 @@ import com.gmail.woodyc40.tenjava.managers.MessageManager;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.Material;
-import org.bukkit.entity.Blaze;
-import org.bukkit.entity.Entity;
-import org.bukkit.entity.EntityType;
-import org.bukkit.entity.Player;
+import org.bukkit.entity.*;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.block.Action;
 import org.bukkit.event.entity.EntityDeathEvent;
+import org.bukkit.event.entity.EntityExplodeEvent;
 import org.bukkit.event.player.PlayerDropItemEvent;
 import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.event.player.PlayerLoginEvent;
@@ -119,6 +117,15 @@ public class Listener implements org.bukkit.event.Listener {
     @EventHandler
     public void onJoin(PlayerLoginEvent e) {
         GameManager.getInstance().addPlayer(e.getPlayer());
+    }
+
+    @EventHandler
+    public void onExplode(EntityExplodeEvent e) {
+        e.setCancelled(true);
+        TNTPrimed tnt = e.getEntity().getWorld().spawn(e.getEntity().getLocation(), TNTPrimed.class);
+        tnt.setFireTicks(0);
+        tnt.setYield(0);
+        tnt.setIsIncendiary(true);
     }
 
     public Entity spawn(Player p, EntityType et) {
