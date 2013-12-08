@@ -32,6 +32,7 @@ public class Listener implements org.bukkit.event.Listener {
     /////////////////////////GAMELISTENER//////////////////////////
     @EventHandler
     public void onMobSend(PlayerInteractEvent e) {
+        e.setCancelled(true);
         Material mat = e.getPlayer().getItemInHand().getType();
 
         if(e.getAction().equals(Action.LEFT_CLICK_BLOCK) && mat.equals(Material.BLAZE_ROD) && GameManager.getInstance().isCreating(e.getPlayer())) {
@@ -114,13 +115,6 @@ public class Listener implements org.bukkit.event.Listener {
     }
 
     @EventHandler
-    public void onDrop(PlayerDropItemEvent e) {
-        if(GameManager.getInstance().isInGame(e.getPlayer())) {
-            e.setCancelled(true);
-        }
-    }
-
-    @EventHandler
     public void onJoin(PlayerLoginEvent e) {
         GameManager.getInstance().addPlayer(e.getPlayer());
     }
@@ -134,20 +128,6 @@ public class Listener implements org.bukkit.event.Listener {
         tnt.setIsIncendiary(true);
     }
 
-    @EventHandler
-    public void onInteract(PlayerInteractEvent e) {
-        if(GameManager.getInstance().isInGame(e.getPlayer())) {
-            e.setCancelled(true);
-        }
-    }
-
-    @EventHandler
-    public void onTarget(EntityTargetEvent e) {
-        if(e.getTarget() instanceof Player && GameManager.getInstance().isInGame((Player) e.getTarget())) {
-            e.setCancelled(true);
-        }
-    }
-
     public Entity spawn(Player p, EntityType et) {
         Entity e = null;
         for(int i = 0; i <= GameManager.getInstance().getPlayerData(p).getSpawnRate(); i++) {
@@ -155,6 +135,7 @@ public class Listener implements org.bukkit.event.Listener {
             for(Entity entity : e.getNearbyEntities(100, 100, 100)) {
                 if(GameManager.getInstance().getArena(p).getCom().uuids.contains(entity.getUniqueId())) {
                     ((Creature)e).setTarget((LivingEntity)entity);
+                    break;
                 }
             }
             GameManager.getInstance().getArena(p).uuids.add(e.getUniqueId());
