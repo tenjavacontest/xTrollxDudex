@@ -34,7 +34,7 @@ public class Listener implements org.bukkit.event.Listener {
     /////////////////////////GAMELISTENER//////////////////////////
     @EventHandler
     public void onMobSend(PlayerInteractEvent e) {
-        if(GameManager.getInstance().isInGame(e.getPlayer()) {
+        if(GameManager.getInstance().isInGame(e.getPlayer())) {
             return;
         }
         e.setCancelled(true);
@@ -49,7 +49,7 @@ public class Listener implements org.bukkit.event.Listener {
 
             GameManager.getInstance().notCreating(e.getPlayer());
         } else if(e.getAction().equals(Action.LEFT_CLICK_AIR)) {
-            if(list.contains(e.getPlayer()) {
+            if(list.contains(e.getPlayer())) {
                 e.getPlayer().sendMessage(MessageManager.getInstance().getError() + "This is on cool down");
                 return;
             }
