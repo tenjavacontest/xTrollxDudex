@@ -19,6 +19,7 @@ public class TenJava extends JavaPlugin {
     public void onEnable() {
         instance = this;
 
+        saveDefaultConfig();
         getServer().getPluginManager().registerEvents(new Listener(), this);
 
         GameManager gm = new GameManager(this);
@@ -31,7 +32,7 @@ public class TenJava extends JavaPlugin {
     }
 
     public void onDisable() {
-
+        saveConfig();
     }
 
     public static TenJava getInstance() {

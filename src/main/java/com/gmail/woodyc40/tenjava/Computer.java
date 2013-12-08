@@ -21,7 +21,7 @@ public class Computer {
         if(new Random().nextBoolean()) {
             for(int x = 0; x <= in * new Random().nextInt(6); x++) {
                 Entity ent = game.getWorld().spawnEntity(game.getSpawn(), et);
-                uuids.add(ent.getUniqueId()); //TODO Set target at spawn, spawn away from the spawn
+                uuids.add(ent.getUniqueId());
             }
         }
     }

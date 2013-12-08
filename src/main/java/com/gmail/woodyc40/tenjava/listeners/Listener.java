@@ -38,6 +38,7 @@ public class Listener implements org.bukkit.event.Listener {
         if(e.getAction().equals(Action.LEFT_CLICK_BLOCK) && mat.equals(Material.BLAZE_ROD) && GameManager.getInstance().isCreating(e.getPlayer())) {
             GameManager.getInstance().getArena(e.getPlayer()).setSpawn(e.getClickedBlock().getLocation());
             e.getPlayer().sendMessage(MessageManager.getInstance().getPrefix() + "Spawn set. This arena is done.");
+            TenJava.getInstance().getConfig().set("Arenas." + GameManager.getInstance().getArena(e.getPlayer()).getId() + ".spawn", GameManager.getInstance().serializeLoc(e.getClickedBlock().getLocation()));
             GameManager.getInstance().notCreating(e.getPlayer());
         } else if(e.getAction().equals(Action.LEFT_CLICK_AIR)) {
             Game g = GameManager.getInstance().getArena(e.getPlayer());

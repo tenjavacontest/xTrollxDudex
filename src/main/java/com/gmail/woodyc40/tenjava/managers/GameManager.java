@@ -59,7 +59,7 @@ public class GameManager {
 
         creators.put(creator.getName(), g);
 
-        plugin.getConfig().set("Arenas." + arenas, creator.getWorld().getName());
+        plugin.getConfig().set("Arenas." + arenas + ".world", creator.getWorld().getName());
 
         creator.getInventory().addItem(new ItemStack(Material.BLAZE_ROD));
         creator.sendMessage(MessageManager.getInstance().getPrefix() + "Click the spawn");
@@ -74,6 +74,7 @@ public class GameManager {
 
             Game g = new Game(arenas);
             g.setWorld(Bukkit.getServer().getWorld(s));
+            g.setSpawn(deserializeLoc(plugin.getConfig().getString("Arenas." + g.getId() + ".spawn")));
             games.add(g);
         }
     }
@@ -213,6 +214,14 @@ public class GameManager {
     public void notCreating(Player p) {
         creators.remove(p.getName());
         getArena(p).p = "";
+    }
+
+    public String serializeLoc(Location l){
+        return l.getWorld().getName()+","+l.getBlockX()+","+l.getBlockY()+","+l.getBlockZ();
+    }
+    public Location deserializeLoc(String s){
+        String[] st = s.split(",");
+        return new Location(Bukkit.getWorld(st[1]), Integer.parseInt(st[1]), Integer.parseInt(st[2]), Integer.parseInt(st[3]));
     }
 
 }
