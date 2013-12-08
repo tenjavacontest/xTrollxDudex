@@ -8,6 +8,7 @@
 package com.gmail.woodyc40.tenjava;
 
 import com.gmail.woodyc40.tenjava.command.CommandHandler;
+import com.gmail.woodyc40.tenjava.command.subcommands.*;
 import com.gmail.woodyc40.tenjava.listeners.Listener;
 import com.gmail.woodyc40.tenjava.managers.GameManager;
 import org.bukkit.plugin.java.JavaPlugin;
@@ -20,6 +21,9 @@ public class TenJava extends JavaPlugin {
         GameManager gm = new GameManager(this);
 
         getCommand("mw").setExecutor(new CommandHandler());
+        CommandHandler.register("create", new Create());
+        CommandHandler.register("stats", new Score());
+        CommandHandler.register("join", new Join());
     }
 
     public void onDisable() {
