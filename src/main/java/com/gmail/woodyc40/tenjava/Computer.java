@@ -49,4 +49,9 @@ public class Computer {
         }
     }
 
+    public void startup() {
+        for(int in = 0; in <= 10; in++) {
+            spawn(1, EntityType.ZOMBIE);
+        }
+    }
 }
