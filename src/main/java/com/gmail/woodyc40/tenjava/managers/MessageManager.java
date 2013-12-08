@@ -34,6 +34,7 @@ public class MessageManager {
 
             p.sendMessage(ChatColor.LIGHT_PURPLE + split[0] + ChatColor.GRAY + ": " + ChatColor.BLUE + split[1]);
         }
+        p.sendMessage(ChatColor.GREEN + "----------[" + ChatColor.DARK_AQUA + "End of help" + ChatColor.GREEN + "]----------");
     }
 
 }
