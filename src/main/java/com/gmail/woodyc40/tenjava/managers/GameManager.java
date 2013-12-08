@@ -171,6 +171,7 @@ public class GameManager {
         p.setAllowFlight(true);
         p.setFlying(false);
         p.sendMessage(MessageManager.getInstance().getPrefix() + "Fly, hurry!");
+        g.getCom().startup();
     }
 
     public void removePlayer(Player p) {
