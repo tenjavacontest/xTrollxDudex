@@ -59,8 +59,8 @@ public class Game {
         return com;
     }
 
-    public String getScoreCard() {
-        return ChatColor.
+    public String getScore() {
+        return ChatColor.GOLD + "InGame kills: " + ChatColor.DARK_BLUE + kills;
     }
 
 }
