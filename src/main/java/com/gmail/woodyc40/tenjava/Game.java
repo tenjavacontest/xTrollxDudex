@@ -20,7 +20,7 @@ public class Game {
     private int id = 0;
     private boolean game = false;
     private World w;
-    private Computer com = new Computer();
+    private Computer com = new Computer(this);
 
 
     public Game(int i) {
